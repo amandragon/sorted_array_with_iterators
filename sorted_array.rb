@@ -38,22 +38,46 @@ class SortedArray
   end
 
   def each &block
-    raise NotImplementedError.new("You need to implement the each method!")
+  i=0
+  while i<@internal_arr.size
+    block.call @internal_arr[i]
+    i+=1
   end
+  @internal_arr
+end
+    #index to 0
+    #loop over all elements in @internal_arr
+    #yield to each element
 
   def map &block
-    raise NotImplementedError.new("You need to implement the map method!")
+   new_array=[]
+   self.each {|el| new_array << yield(el)} #when you use self, you're using your own each
+   return new_array
   end
 
   def map! &block
-    raise NotImplementedError.new("You need to implement the map! method!")
-  end
+    i=0
+    until i==@internal_arr.size
+    result=yield @internal_arr[i]
+    @internal_arr[i]=result
+    i+=1
+    end
+    return @internal_arr
+    end
 
-  def find value
-    raise NotImplementedError.new("You need to implement the find method!")
+  def find &block
+    each {|el| return el if yield (el)}
+    nil
   end
 
   def inject acc=nil, &block
-    raise NotImplementedError.new("You need to implement the inject method!")
+    each do |el|
+      if acc.nil?
+        acc=@internal_arr[0]
+      else
+        acc=yield acc,el
+      end
+    end
+    acc
+    end
   end
-end
